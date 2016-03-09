@@ -2,7 +2,7 @@
  *
  * Copyright (c) 2015,2016 John Cunningham Bowler
  *
- * Last changed in libpng 1.6.22 [(PENDING RELEASE)]
+ * Last changed in libpng 1.6.24 [August 4, 2016]
  *
  * This code is released under the libpng license.
  * For conditions of distribution and use, see the disclaimer
@@ -1082,6 +1082,7 @@ compare_read(struct display *dp, int applied_transforms)
       }
 
       else
+#     ifdef PNG_sBIT_SUPPORTED
       {
          unsigned long y;
          int bpp;   /* bits-per-pixel then bytes-per-pixel */
@@ -1243,6 +1244,10 @@ compare_read(struct display *dp, int applied_transforms)
             }
          } /* for y */
       }
+#     else /* !sBIT */
+         display_log(dp, INTERNAL_ERROR,
+               "active shift transform but no sBIT support");
+#     endif /* !sBIT */
    }
 
    return 1; /* compare succeeded */
